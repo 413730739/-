@@ -236,7 +236,7 @@ function setup() {
   btnTutorial.position(20, 400); // 按鈕位置（與上一個按鈕相隔 70）
   styleButton(btnTutorial); // 設定按鈕樣式
   btnTutorial.mousePressed(() => {
-    showIframe('https://hackmd.io/@cfchen/Hk7vgPecJx'); // 顯示教學影片網址
+    showIframe('./20250324_105216.mp4'); // 顯示本地影片檔案
   });
   btnTutorial.mouseOver(() => isHoverTutorial = true); // 滑鼠移入
   btnTutorial.mouseOut(() => isHoverTutorial = false); // 滑鼠移出
@@ -285,6 +285,12 @@ function setup() {
       }
     }, 100); // 延遲檢查，避免滑鼠快速移動導致選單消失
   });
+
+  // 設定選單的 z-index
+  menuTamkangET.style('z-index', '10'); // 設定選單的層級較高
+
+  // 設定 iframe 容器的 z-index
+  iframeContainer.style('z-index', '5'); // 設定 iframe 容器的層級較低
 }
 
 function draw() {
@@ -312,7 +318,7 @@ function draw() {
   fill(0); // 設定文字顏色為黑色
   textSize(20); // 設定文字大小
   textAlign(RIGHT, TOP); // 將文字對齊到右上角
-  text("學號：OOOOO0739", width / 2, 20); // 在右上角繪製文字，距離邊緣 20px
+  text("學號：OOOOO0739", width -20, 20); // 在右上角繪製文字，距離邊緣 20px
 
 // 顯示第一個按鈕的精靈動畫
 if (isHoverTamkang) {
@@ -376,11 +382,11 @@ function styleButton(button) {
 // 重置畫面的函式
 function resetToHome() {
   bubbles = []; // 清空泡泡陣列
-  for (let i = 0; i < 50; i++) { // 重新產生 50 個泡泡
+  for (let i = 0; i < 80; i++) { // 重新產生 50 個泡泡
     let bubble = {
       x: random(width),
       y: random(height),
-      size: random(20, 80),
+      size: random(20, 250),
       color: color(random(200, 255), random(200, 255), random(200, 255), 150),
       speedX: random(-2, 2),
       speedY: random(-2, 2)
@@ -422,23 +428,13 @@ function mousePressed() {
 }
 
 function mouseMoved() {
-  // 檢查滑鼠是否超出所有按鈕範圍 500px
-  let allButtonsHidden = true;
-
   buttons.forEach(({ button, x, y }) => {
-    let distance = dist(mouseX, mouseY, x + button.width / 2, y + button.height / 2);
-    if (distance <= 500) {
-      button.style('display', 'block'); // 顯示按鈕
-      allButtonsHidden = false; // 至少有一個按鈕在範圍內
-    } else {
-      button.style('display', 'none'); // 隱藏按鈕
-    }
+    let distance = mouseX; // 以畫布最左側為中心，直接使用 mouseX 作為距離
+    let targetX = distance > 500 ? x - 200 : x; // 當滑鼠距離大於 500 時，按鈕移向左側，否則回到原位
+    let currentX = button.position().x; // 取得按鈕目前的 x 座標
+    let newX = lerp(currentX, targetX, 0.1); // 使用 lerp 平滑移動按鈕
+    button.position(newX, y); // 更新按鈕位置
   });
-
-  // 如果所有按鈕都超出範圍，隱藏所有按鈕
-  if (allButtonsHidden) {
-    buttons.forEach(({ button }) => button.style('display', 'none'));
-  }
 }
 
 // 檢查滑鼠是否在選單範圍內
