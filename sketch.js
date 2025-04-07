@@ -428,6 +428,11 @@ function mousePressed() {
 }
 
 function mouseMoved() {
+  // 如果滑鼠在選單範圍內，直接返回，不執行按鈕移動邏輯
+  if (isMouseInMenu(menuTamkangET)) {
+    return;
+  }
+
   buttons.forEach(({ button, x, y }) => {
     let distance = mouseX; // 以畫布最左側為中心，直接使用 mouseX 作為距離
     let targetX = distance > 500 ? x - 200 : x; // 當滑鼠距離大於 500 時，按鈕移向左側，否則回到原位
