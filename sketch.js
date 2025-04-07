@@ -71,7 +71,7 @@ function setup() {
     let bubble = {
       x: random(width), // 隨機 x 座標
       y: random(height), // 隨機 y 座標
-      size: random(50, 200), // 隨機大小
+      size: random(20, 100), // 隨機大小
       color: color(random(200, 255), random(200, 255), random(200, 255), 150), // 淡色系顏色
       speedX: random(-2, 2), // 隨機水平移動速度
       speedY: random(-2, 2) // 隨機垂直移動速度
@@ -386,7 +386,7 @@ function resetToHome() {
     let bubble = {
       x: random(width),
       y: random(height),
-      size: random(20, 200),
+      size: random(20, 100),
       color: color(random(200, 255), random(200, 255), random(200, 255), 150),
       speedX: random(-2, 2),
       speedY: random(-2, 2)
